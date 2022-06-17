@@ -38,7 +38,7 @@ instance.interceptors.response.use(res => {
   // 错误的处理
   // 比如401 状态码是返回无效的token，做一些token的逻辑
   if (err.response && err.response.status === 401) { // err.response排除无响应情况
-    // 处理 401 事件
+    // 处理响应码 401
     // 1.清空本地无效信息
     // 2.跳转值登录页
     // 3.跳转是需要携带参数（当前页面的路由地址）给登录，用户登录后根据携带参数跳转至原来页面
@@ -50,6 +50,7 @@ instance.interceptors.response.use(res => {
      * > encodeURIComponent('?a=100&b=20')
         '%3Fa%3D100%26b%3D20'
      */
+    // 编程导航跳转值 login页面
     router.push({ path: '/login', query: { redirectUrl: fullPath } }) // login?redirectUrl=当前路由地址
   }
   return Promise.reject(err)

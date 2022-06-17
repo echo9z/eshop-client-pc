@@ -5,13 +5,16 @@
 * @date 2022/06/16 11:29:17
 !-->
 <template>
-  home
+  <div class="container">
+    HomePage
+  <div class="test"></div>
+  </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'E-Home',
+  name: 'HomePage',
 
   components: {},
 
@@ -25,4 +28,10 @@ export default defineComponent({
 
 </script>
 <style lang='less' scoped>
+// @import '@/assets/styles/mixin.less';
+.test{
+  .hoverShadow();
+  width: 100px;
+  height: 100px;
+}
 </style>

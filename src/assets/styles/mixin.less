@@ -1,0 +1,24 @@
+// #abc{
+//   width: 100px;
+//   height: 100px;
+// }
+// .fontSy(){
+//   font-weight: bold;
+//   font-style: italic;
+// }
+// .borderRad(@px) {
+//   border-radius: @px
+// }
+// .box-tip{
+//   #abc(); // box-tip类样式就有了w100px h100px
+//   .fontSy(); // box-tip类样式就有了字体加粗 和 字体倾斜
+//   .borderRad(10px) // 带参数的混入函数
+// }
+// 鼠标经过上移阴影动画
+.hoverShadow () {
+  transition: all .5s; // 过渡动画，进过时.5延时
+  &:hover {
+    transform: translate3d(0,-3px,0);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  }
+}

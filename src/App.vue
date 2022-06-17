@@ -1,27 +1,8 @@
 <template>
-  app {{$store.state.user.profile.account}} <br>
-  <button @click="$store.commit('user/setUser',{account: 'lili'})">设置用户信息</button>
-  <p>{{$router.currentRoute.value.fullPath}}</p>
+  <!-- 路由出口，根据路由规则匹配到的页面，会渲染到view中，比如login页面，layout页面 -->
+  <router-view />
 </template>
 
-<script>
-import { defineComponent } from 'vue'
-import { useRouter } from 'vue-router'
-export default defineComponent({
-  name: 'App',
-
-  components: {},
-
-  props: {},
-
-  setup () {
-    const router = useRouter()
-    console.log(router)
-    return {
-    }
-  }
-})
-
-</script>
+<script></script>
 <style lang='less' scoped>
 </style>
