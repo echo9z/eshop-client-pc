@@ -1,7 +1,4 @@
-import {
-  createRouter,
-  createWebHashHistory
-} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   // 一级路由布局容器
@@ -11,7 +8,17 @@ const routes = [
     children: [
       { // 二级路由布局容器 渲染个人中心 和 订单管理等等
         path: '/',
-        component: () => import('@/views/home')
+        component: () => import('@/views/home') // home页面用于展示渲染个人中心 和 订单管理等等
+      },
+      {
+        path: '/category/:id',
+        component: () => import('@/views/category'),
+        props: true // 动态路由传递参数，将id在映射到组件中props属性使用，方便维护使用
+      },
+      {
+        path: '/category/sub/:id',
+        component: () => import('@/views/category/subcategory'),
+        props: true
       }
     ]
   }
