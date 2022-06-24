@@ -7,4 +7,7 @@ import 'normalize.css'
 // 本项目所用到的重置样式和公用样式
 import '@/assets/styles/common.less'
 
-createApp(App).use(store).use(router).mount('#app')
+// 导入自己封装插件 即 UI组件库
+import UI from '@/components/library'
+
+createApp(App).use(store).use(router).use(UI).mount('#app')

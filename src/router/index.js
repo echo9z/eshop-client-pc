@@ -10,13 +10,18 @@ const routes = [
         path: '/',
         component: () => import('@/views/home') // home页面用于展示渲染个人中心 和 订单管理等等
       },
-      {
+      { // 一级分类 比如美食
         path: '/category/:id',
         component: () => import('@/views/category'),
         props: true // 动态路由传递参数，将id在映射到组件中props属性使用，方便维护使用
       },
-      {
+      { // 二级分类 比如美食分类下的 调味酱菜
         path: '/category/sub/:id',
+        component: () => import('@/views/category/subcategory'),
+        props: true
+      },
+      { // 商品路由
+        path: '/product/:id',
         component: () => import('@/views/category/subcategory'),
         props: true
       }

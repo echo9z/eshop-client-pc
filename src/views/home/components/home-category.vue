@@ -10,14 +10,21 @@
     <ul class="menu">
       <!-- 有10行，即10个li -->
       <!-- active: categoryId === item.id处理的鼠标移除到弹出层，左侧对应分类id的背景也要添加 active样式-->
-      <li :class="{active: categoryId === item.id}" v-for="item in menuList" :key="item.id" @mouseenter="categoryId = item.id">
+      <li :class="{active: categoryId && categoryId === item.id}" v-for="item in menuList" :key="item.id" @mouseenter="categoryId = item.id">
         <RouterLink :to="`/category/${item.id}`">{{item.name}}</RouterLink>
         <!-- 初始化时准备的为常量字符数组，是预先准备的数据，没有请求接口时，没有 children属性所有的添加v-if进行控制 -->
         <template v-if="item.children">
           <RouterLink :to="`/category/sub/${sub.id}`" v-for="sub in item.children" :key="sub.id">{{sub.name}}</RouterLink>
         </template>
+        <!-- 如果children，不存在则显示骨架屏组件 -->
+        <template v-else>
+          <!-- 在组件上添加 style样式 -->
+          <ESkeleton :width="'60px'" :height="'18px'" :bg="'rgba(255,255,255, .2)'" :animated="true" style="margin-right: 5px;" />
+          <ESkeleton :width="'50px'" :height="'18px'" :bg="'rgba(255,255,255, .2)'" :animated="true" />
+        </template>
       </li>
     </ul>
+
     <!-- 鼠标进入时，显示一个弹出层layer -->
     <!-- 弹层 -->
     <div class="layer">
@@ -37,6 +44,7 @@
           </RouterLink>
         </li>
       </ul>
+
       <!-- 品牌自己的结构 -->
       <ul v-if="currCategoryGoods && currCategoryGoods.brands" >
         <li class="brand" v-for="brand in currCategoryGoods.brands" :key="brand.id">
@@ -51,6 +59,7 @@
         </li>
       </ul>
     </div>
+    <!-- <ESkeleton :bg="'red'" :animated="true" /> -->
   </div>
 </template>
 
@@ -230,6 +239,17 @@ export default defineComponent({
     .layer {
       display: block;
     }
+  }
+}
+.e-skeleton { // 整个骨架屏的透明度渐变
+  animation: fade 1s linear infinite alternate;
+}
+@keyframes fade {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
   }
 }
 </style>
