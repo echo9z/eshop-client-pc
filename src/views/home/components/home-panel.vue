@@ -6,6 +6,7 @@
 !-->
 <template>
   <div class="home-panel">
+    <!-- container版心容器 -->
     <div class="container">
       <!-- 面板分为上下两部分 标题 和 下方商品推荐 -->
       <div class="head">

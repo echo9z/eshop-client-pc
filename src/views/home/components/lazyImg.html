@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    img{
+      width: 150px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img moduleLazy img moduleLazy img moduleLazy img module</p>
+  <p>Lazy img module</p>
+  <p>Lazy img module</p>
+  <p>Lazy img module</p>
+  <p>Lazy img module</p>
+  <!-- 设置 data-src属性 -->
+  <img data-src="https://pic1.zhimg.com/v2-55fc240f29404fe6032693100f36fcd8_1440w.jpg?source=172ae18b" alt=""><br>
+  <p>Lazy img module</p>
+  <img data-src="https://pic1.zhimg.com/v2-1b216ea2ed99421b04c0be07d3052f0e_720w.jpg?source=7e7ef6e2" alt="">
+  <p>Lazy img module</p>
+  <script>
+    // 获取所有img doms元素
+    const images = document.querySelectorAll('img')
+    // 监听浏览器的滚动事件
+    /* window.addEventListener('scroll', (e) => {
+      // 判读每张图片是否出现在可视区域
+      images.forEach(img => {
+        // 获取每张图片距离窗口顶部的距离
+        const imgTop = img.getBoundingClientRect().top
+        if (imgTop < window.innerHeight) { // 图片距离顶部视窗的距离 < 浏览器视窗的高度
+          // 这里做图片懒加载
+          const data_src = img.getAttribute('data-src')
+          img.setAttribute('src', data_src)
+          // img.src = img.dataset.src // 获取的自定义属性data-src的值
+        }
+        console.log('scroll触发');
+      })
+    }) */
+
+    // 当存在问题，scroll滚动事件，会不断的触发
+    // 可以使用h5 IntersectionObserve(callback, {option})创建一个观察对象 事件图片的懒加载
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        console.log(entry);
+        if(entry.isIntersecting) {
+          const img = entry.target // 观察到的dom元素
+          const data_src = img.getAttribute('data-src')
+          img.setAttribute('src', data_src)
+
+          // 取消对 当前img元素的观察
+          observer.unobserve(img)
+        }
+      })
+      console.log('触发了');
+    }, { threshold: 0 }) // 观察元素 与 浏览器可视区的交汇点阈值 10%，0立即执行callback
+    // 遍历每个img的dom，对每个img进行观察
+    images.forEach(img => {
+      // 观察每个img，与浏览器可视区域的相交比例，大于10%
+      observer.observe(img)
+    });
+  </script>
+</body>
+</html>

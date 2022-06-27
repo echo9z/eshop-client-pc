@@ -8,7 +8,7 @@
     <!-- 首页入口 -->
   <div class="home-entry">
     <div class="container">
-      <!-- 左侧分类 -->
+      <!-- 左侧分类 层级高待遇轮播图组件 -->
       <HomeCategory />
       <!-- 轮播图 -->
       <HomeBanner />
@@ -20,6 +20,10 @@
   <HomeHot />
   <!-- 品牌推荐 -->
   <HomeBrand />
+  <!-- 商品展示 -->
+  <HomeProduct />
+  <!-- 最新专题 -->
+  <HomeSpecial />
   <!-- <button @click="show=true">显示|创建</button>
   <button @click="show=false">隐藏|移除</button>
   <transition>
@@ -34,6 +38,8 @@ import HomeBanner from './components/home-banner.vue'
 import HomeNew from './components/home-new.vue'
 import HomeHot from './components/home-hot.vue'
 import HomeBrand from './components/home-brand.vue'
+import HomeProduct from './components/home-product.vue'
+import HomeSpecial from './components/home-special.vue'
 export default defineComponent({
   name: 'HomePage',
 
@@ -42,7 +48,9 @@ export default defineComponent({
     HomeBanner,
     HomeNew,
     HomeHot,
-    HomeBrand
+    HomeBrand,
+    HomeProduct,
+    HomeSpecial
   },
 
   props: {},

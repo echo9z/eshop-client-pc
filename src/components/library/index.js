@@ -5,6 +5,7 @@
 import ESkeleton from './e-skeleton' // 骨架组件
 import ECarousel from './e-carousel'
 import EMore from './e-more'
+import defaultImg from '@/assets/images/200.png'
 export default {
   install (app, options) {
     // 在app上进行扩展，app提供 component directive 函数
@@ -12,5 +13,52 @@ export default {
     app.component(ESkeleton.name, ESkeleton) // 将骨架组件 注册为全局插件
     app.component(ECarousel.name, ECarousel)
     app.component(EMore.name, EMore)
+    // 定义图片懒加载指令
+    defineDirective(app)
   }
 }
+console.log(defaultImg)
+// 1.图片懒加载指令 v-lazy
+const defineDirective = (app) => {
+  app.directive('lazy', {
+    // 原理：img图片的地址不能存在src上，当图片进入可视区域，将存储图片地址设置给图片元素即可
+    // vue2.0监听使用指令的DOM是否创建好，钩子函数：inserted (el, binding) {}
+    // vue3.0的指令拥有的钩子函数和组件的一样，使用指令的DOM是否创建好，钩子函数：mounted
+    // 及他自己的所有子节点都挂载完成后调用，dom渲染完毕后执行
+    mounted (el, binding) {
+      // console.log(el)
+      // 2.创建一个观察对象
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // 图片加载失败的处理,error 图片加载失败的事件 load图片加载成功的事件
+            el.onerror = () => {
+              // 设置默认图片
+              el.src = defaultImg
+            }
+            // 3.将指令的值赋值给 观察img的src属性
+            el.src = binding.value
+            // 取消当前dom观察
+            observer.unobserve(el)
+          }
+        })
+      }, { threshold: 0 }) // 相交比例为0 触发回调函
+      // 对赋予v-lazy指令的el dom进行观察
+      observer.observe(el)
+      // console.log(binding)
+    }
+  })
+}
+
+/* const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target // 观察到的dom元素
+      console.log(img)
+      const dataSrc = img.getAttribute('data-src')
+      img.setAttribute('src', dataSrc)
+      // 赋值为src属性，取消当前dom观察
+      observer.unobserve(img)
+    }
+  })
+}, { threshold: 0 }) // 相交比例为0 触发回调函数 */

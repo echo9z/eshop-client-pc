@@ -12,7 +12,7 @@
   <!-- 头部组件 -->
   <AppHeader />
   <!-- main主体内容 -->
-  <div class="main">
+  <div class="app-main">
     <!-- 二级路由出口 商品分类 商品详细 个人中心啊，订单管理啊等等组件-->
     <router-view></router-view>
   </div>
@@ -51,4 +51,7 @@ export default defineComponent({
 
 </script>
 <style lang='less' scoped>
+.app-main{
+  min-height: 600px;
+}
 </style>

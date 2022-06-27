@@ -20,11 +20,10 @@ export const useLazyData = (target, callback) => {
       // 调用API函数获取数据
       if (callback) { // 如果api请求的函数存在
         const res = await callback()
-        // console.log(res.result)
+        console.log(res.result)
         data.value = res.result
       }
     }
-  })
+  }, { threshold: 0 }) // 观察的target dom元素与浏览器可视区的比例大于0就触发 上面的箭头函数
   return data
-  // stop()
 }
