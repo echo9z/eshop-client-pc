@@ -6,7 +6,18 @@
 !-->
 <template>
   <div class="top-category">
-    {{id}}
+    <div class="container">
+      <!-- 面包屑 -->
+      <EBread>
+        <EBreadItem :to="{path:'/'}" >首页</EBreadItem>
+        <EBreadItem to="/category/1005002" >居家</EBreadItem>
+        <EBreadItem >居家用品</EBreadItem>
+      </EBread>
+      <!-- 轮播图 -->
+      <!-- 全部分类 -->
+      <!-- 各个分类推荐商品 -->
+      {{id}}
+    </div>
   </div>
 </template>
 

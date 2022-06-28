@@ -2,22 +2,44 @@
 // library 用于处理全局注册组件，比如在一个组件中使用全局组件，就需要先导入组件，在进行使用
 // vue2 插件写法：导出一个对象，有install函数，默认传入了Vue构造函数 Vue.use注册，在Vue对象之上扩展
 // vue3 插件写法：导出一个对象，有install函数，默认传入了app实例 createApp(App).use注册，在app实例之上扩展
-import ESkeleton from './e-skeleton' // 骨架组件
-import ECarousel from './e-carousel'
-import EMore from './e-more'
+// import ESkeleton from './e-skeleton' // 骨架组件
+// import ECarousel from './e-carousel'
+// import EMore from './e-more'
+// import EBread from './e-bread'
+// import EBreadItem from './e-bread-item'
+
+// 使用webpack提供 require.context()函数，用于加载某个目录下所有的 .vue后缀文件
+// *  然后 context 函数会返回一个导入函数 importFn，这个函数对象下有一个属性 keys() 获取所有的文件路径
+// *  通过文件路径数组，通过遍历数组，再使用 importFn 根据路径导入组件对象
+// *  遍历的同时进行全局注册即可
+
 import defaultImg from '@/assets/images/200.png'
+// context(目录路径，是否记住子目录，加载文件的匹配正则)
+const importFn = require.context('./', false, /\.vue$/)
+// console.log(importFn.keys()) // 返回当前目录下所有文件路径的数组
+
 export default {
   install (app, options) {
     // 在app上进行扩展，app提供 component directive 函数
     // 挂载元素属性或方法 通过app.config.globalProperties 方式
-    app.component(ESkeleton.name, ESkeleton) // 将骨架组件 注册为全局插件
-    app.component(ECarousel.name, ECarousel)
-    app.component(EMore.name, EMore)
+    // app.component(ESkeleton.name, ESkeleton) // 将骨架组件 注册为全局插件
+    // app.component(ECarousel.name, ECarousel) // 通用轮播图组件
+    // app.component(EMore.name, EMore) // 查看更多组件
+    // app.component(EBread.name, EBread) // 面包屑组件
+    // app.component(EBreadItem.name, EBreadItem) // 面包屑组件item
+    // 根据importFn.keys() 进行批量注册
+    importFn.keys().forEach(path => {
+      // 导入组件 default 是每一个组件中export default
+      const component = importFn(path).default
+      // 注册组件
+      app.component(component.name, component)
+    })
+
     // 定义图片懒加载指令
     defineDirective(app)
   }
 }
-console.log(defaultImg)
+
 // 1.图片懒加载指令 v-lazy
 const defineDirective = (app) => {
   app.directive('lazy', {
