@@ -8,3 +8,11 @@ import request from '@/utils/request'
 export const findCategory = () => {
   return request('/home/category/head', 'GET')
 }
+/**
+ * 获取一级类目，下的各个子分类，子分类包含推荐商品
+ * @param {String} id 一级类目ID
+ * @returns Promise
+ */
+export const findTopCategory = (id) => {
+  return request('/category', 'GET', { id })
+}
