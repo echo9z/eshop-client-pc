@@ -22,7 +22,7 @@ const routes = [
       },
       { // 商品路由
         path: '/product/:id',
-        component: () => import('@/views/category/subcategory'),
+        component: () => import('@/views/goods'),
         props: true
       }
     ]
@@ -33,7 +33,15 @@ const routes = [
 // vue3.0 createRouter({})
 const router = createRouter({
   history: createWebHashHistory(), // 使用历史hash路由模式
-  routes
+  routes,
+  // 路由在进行跳转切换时，进入新的页面始终滚动到顶部
+  // https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html
+  scrollBehavior () {
+    // 始终滚动到顶部
+    // vu2.0 x 和 y
+    // vu3.0 left 和 top
+    return { left: 0, top: 0 }
+  }
 })
 
 export default router

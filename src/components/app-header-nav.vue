@@ -7,7 +7,8 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><router-link to="/">首页</router-link></li>
-    <li v-for="item in categoryList" :key="item.id" @mouseenter="show(item)" @mouseleave="hide(item)">
+    <!-- mousemove后期做了改动，鼠标进入改为鼠标移动时触发 -->
+    <li v-for="item in categoryList" :key="item.id" @mousemove="show(item)" @mouseleave="hide(item)">
       <!-- 一级类目 to一级分类要跳转的类目-->
       <!-- mouseenter鼠标进入， -->
       <router-link :to="`/category/${item.id}`" @click="hide(item)">{{item.name}}</router-link>

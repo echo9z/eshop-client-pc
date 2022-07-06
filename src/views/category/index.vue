@@ -10,7 +10,13 @@
       <!-- 面包屑 -->
       <EBread>
         <EBreadItem :to="{path:'/'}" >首页</EBreadItem>
-        <EBreadItem :to="`/category/${id}`" >{{topCategory.name}}</EBreadItem>
+        <Transition name="fade-right">
+          <!-- 通过vue的mode 控制动画的执行顺序，是先执行动画进入 还是先执行离开 -->
+          <!-- 这里添加key属性，关联ID才会创建和移除
+          vue虚拟dom，只是修改节点的内容，并没创建上移除EBreadItem节点，所有添加key来进行区分
+          根据key的不同会更新和创建节点，key就是唯一标识，当key发送变化是才会创建节点 -->
+          <EBreadItem :key="topCategory.id" :to="`/category/${topCategory.id}`" >{{topCategory.name}}</EBreadItem>
+        </Transition>
       </EBread>
       <!-- 轮播图 -->
       <ECarousel :sliders="sliders" style="height:500px" autoPlay />
@@ -105,6 +111,7 @@ export default defineComponent({
     watch(() => props.id, newId => {
       // 每次发送变化时，调用api获取对应一级分类推荐商品
       newId && findCate() // newId的id存在的时候再去发送请求
+      // if (newVal && `/category/${newId}` === route.path) findCate() // 这段代码是使用route.param.id，处理跳转值其他页面路由，id发送变化进行请求
     }, { immediate: true })
     console.log(1)
     return {
@@ -117,6 +124,7 @@ export default defineComponent({
 
 </script>
 <style lang='less' scoped>
+
 .top-category {
   h3 {
     font-size: 28px;

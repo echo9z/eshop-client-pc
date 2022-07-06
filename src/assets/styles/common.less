@@ -101,3 +101,31 @@ ul {
   line-height: 0;
   clear: both;
 }
+// 用于面包屑组件最后一个item过渡动画
+// 显示、创建 显示前从右侧20px 位移到本来的位置；执行动画做过渡0.5s； 显示后没有进行位移 透明度为1
+// 隐藏、移除 隐藏前透明度1 没有进行位移；执行动画做过渡0.5s；  隐藏后 移动到右侧20px，透明度为0
+.fade-right-enter-from{
+  transform: translateX(20px);
+  opacity: 0;
+}
+.fade-right-enter-active{
+  transition: all 0.5s;
+}
+.fade-right-enter-to{
+  transform: none;
+  opacity: 1;
+}
+// 下面是less语法
+// .fade-right{
+//   &-enter-to, &-leave-from{ // 元素进入是 0
+//     opacity: 1;
+//     transform: none
+//   }
+//   &-enter-from, &-leave-to{ // 元素进入是 由0到1，慢慢显示，离开时是 1到0 慢慢隐藏
+//     opacity: 0;
+//     transform: translate3d(20px,0,0);
+//   }
+//   &-enter-active, &-leave-active{ // 进入时 和 离开时 都做动画进行执行
+//     transition: all .1s;
+//   }
+// }
