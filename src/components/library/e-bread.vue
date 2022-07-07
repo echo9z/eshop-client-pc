@@ -38,9 +38,7 @@
 import { defineComponent, h } from 'vue'
 export default defineComponent({
   name: 'EBread',
-
   components: {},
-
   render () {
     // vue2.0的 h函数，实在reader的参数中传入 render (h) {return h(....)}
     // vue3.0的 h函数，通过vue 进行按需导读import { h } from 'vue'
