@@ -13,5 +13,15 @@ module.exports = defineConfig({
         path.join(__dirname, './src/assets/styles/mixin.less')
       ]
     }
+  },
+  chainWebpack: config => {
+    config.module
+      .rule('images')
+      .test(/\.(jpg|png|gif)$/)
+      .set('parser', {
+        dataUrlCondition: {
+          maxSize: 10 * 1024 // 10KiB
+        }
+      }) // 10kb以下将图片打包为base64
   }
 })

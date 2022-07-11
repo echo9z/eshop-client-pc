@@ -1,5 +1,5 @@
 <!--
-* @description 商品销售属性
+* @description 商品销售属性 评价收藏
 * @fileName goods-sales.vue
 * @author echo9z
 * @date 2022/07/07 18:09:31

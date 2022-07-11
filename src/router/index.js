@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   // 一级路由布局容器
@@ -32,7 +32,7 @@ const routes = [
 // vue2.0 const router = VueRouter({}) 创建路由实例
 // vue3.0 createRouter({})
 const router = createRouter({
-  history: createWebHashHistory(), // 使用历史hash路由模式
+  history: createWebHistory(), // 使用历史hash路由模式
   routes,
   // 路由在进行跳转切换时，进入新的页面始终滚动到顶部
   // https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html

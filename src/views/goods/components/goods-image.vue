@@ -70,7 +70,7 @@ export default defineComponent({
     // 4.使用useMouseInElement得到元素左上角的坐标和是否离开元素数据
     const { elementX, elementY, isOutside } = useMouseInElement(middle)
     watch([elementX, elementY, isOutside], () => {
-      console.log(isOutside.value)
+      // console.log(isOutside.value)
       show.value = !isOutside.value // 是否进入目标middle，进入isOutside值为false，没有进入isOutside值为true
       if (!isOutside.value) {
         let left = elementX.value - 100

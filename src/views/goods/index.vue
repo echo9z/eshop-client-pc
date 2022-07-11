@@ -19,9 +19,14 @@
         <!-- 商品图片展示 -->
         <div class="media">
           <GoodsImage :images="goods.mainPictures" />
+          <GoodsSales />
         </div>
         <!-- 商品信息介绍 -->
-        <div class="spec"></div>
+        <div class="spec">
+          <GoodsName :goods="goods"/>
+          <!-- skuId:根据传入的id值，自动选择商品规格 -->
+          <GoodsSku :goods="goods" :skuId="'1369155863389933570'" @change="changeSku"/>
+        </div>
       </div>
       <!-- 商品推荐 一个小轮播图 -->
       <GoodsRelevant />
@@ -45,7 +50,9 @@ import { defineComponent, nextTick, ref, watch } from 'vue'
 import GoodsRelevant from './components/goods-relevant.vue'
 import GoodsImage from './components/goods-image.vue'
 import { findGoods } from '@/api/product'
-
+import GoodsSales from './components/goods-sales.vue'
+import GoodsName from './components/goods-name.vue'
+import GoodsSku from './components/goods-sku.vue'
 const useGoods = (props) => {
   const goods = ref(null)
   // 路由地址商品id发生变化，但不会重新初始化组件，通过监听在处理
@@ -67,7 +74,7 @@ const useGoods = (props) => {
 }
 export default defineComponent({
   name: 'EGoodsPage',
-  components: { GoodsRelevant, GoodsImage },
+  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku },
   props: {
     id: { // 通过路由导航获取，路由参数
       type: String,
@@ -78,8 +85,19 @@ export default defineComponent({
   setup (props) {
     // 1. 获取商品详情，进行面包屑渲染
     const goods = useGoods(props)
+
+    // 取得sku 对象信息
+    const changeSku = (sku) => {
+      console.log(sku)
+      if (sku.skuId) {
+        goods.value.price = sku.price
+        goods.value.oldPrice = sku.oldPrice
+        goods.value.inventory = sku.inventory
+      }
+    }
     return {
-      goods
+      goods,
+      changeSku
     }
   }
 })

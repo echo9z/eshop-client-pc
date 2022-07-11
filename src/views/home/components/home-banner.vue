@@ -46,11 +46,11 @@ export default defineComponent({
 }
 // 覆盖组件的样式，调整为自己想要的样式
 .e-carousel {
-  // /deep/ 或者 ::v-deep 深度作用
-  /deep/ .carousel-btn.prev { // 覆盖左侧距离
+  // /deep/ 或者 ::v-deep 深度作用 在vue3中使用:deep()
+  :deep(.carousel-btn.prev) { // 覆盖左侧距离
     left: 270px;
   }
-  /deep/ .carousel-indicator { // 中间五个肖安娜位置
+  :deep(.carousel-indicator) { // 中间五个肖安娜位置
     padding-left: 250px;
   }
 }
