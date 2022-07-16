@@ -26,33 +26,44 @@
           <GoodsName :goods="goods"/>
           <!-- skuId:根据传入的id值，自动选择商品规格 -->
           <GoodsSku :goods="goods" :skuId="'1369155863389933570'" @change="changeSku"/>
+          <!-- 商品数量组件 -->
+          <ENumBox v-model="num" :max="goods.inventory" label="数量" />
+          <!-- 按钮组件 -->
+          <EButton type="primary" style="margin-top: 20px;" size="large" >加入购物车</EButton>
         </div>
       </div>
       <!-- 商品推荐 一个小轮播图 -->
-      <GoodsRelevant />
+      <GoodsRelevant :goodsId="id" />
       <!-- 商品详情 -->
       <div class="goods-footer">
         <div class="goods-article">
           <!-- 商品+评价 -->
-          <div class="goods-tabs">商品+评价</div>
+          <GoodsTabs />
           <!-- 注意事项 -->
-          <div class="goods-warn">注意事项</div>
+          <GoodsWarn />
         </div>
         <!-- 24热榜+专题推荐 -->
-        <div class="goods-aside">24热榜+专题推荐 </div>
+        <div class="goods-aside">
+          <GoodsHot />
+          <GoodsHot :type="2" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, nextTick, ref, watch } from 'vue'
+import { defineComponent, nextTick, ref, watch, provide } from 'vue'
 import GoodsRelevant from './components/goods-relevant.vue'
 import GoodsImage from './components/goods-image.vue'
 import { findGoods } from '@/api/product'
 import GoodsSales from './components/goods-sales.vue'
 import GoodsName from './components/goods-name.vue'
 import GoodsSku from './components/goods-sku.vue'
+import GoodsTabs from './components/goods-tabs.vue'
+import EButton from '@/components/library/e-button.vue'
+import GoodsHot from './components/goods-hot.vue'
+import GoodsWarn from './components/goods-warn.vue'
 const useGoods = (props) => {
   const goods = ref(null)
   // 路由地址商品id发生变化，但不会重新初始化组件，通过监听在处理
@@ -74,7 +85,7 @@ const useGoods = (props) => {
 }
 export default defineComponent({
   name: 'EGoodsPage',
-  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku },
+  components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, EButton, GoodsTabs, GoodsHot, GoodsWarn },
   props: {
     id: { // 通过路由导航获取，路由参数
       type: String,
@@ -95,9 +106,16 @@ export default defineComponent({
         goods.value.inventory = sku.inventory
       }
     }
+
+    // 通过vue3中依赖注入 provide函数
+    provide('goods', goods)
+    // 商品的选择数量
+    const num = ref(1)
+
     return {
       goods,
-      changeSku
+      changeSku,
+      num
     }
   }
 })

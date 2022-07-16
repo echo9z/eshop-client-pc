@@ -142,14 +142,16 @@ const initDefaultSelected = (goods, skuId) => {
   // 1.找出sku信息
   // 2.遍历每个按钮，按钮的值 和 sku对象中space 信息相同，则选中
   const sku = goods.skus.find(sku => sku.id === skuId)
-
-  goods.specs.forEach((spec, i) => {
-    // 如果规格名字 颜色 与 sku中名字 颜色，则进行查找
-    if (spec.name === sku.specs[i].name) {
-      const selectRes = spec.values.find(val => val.name === sku.specs[i].valueName)
-      selectRes ? selectRes.selected = true : selectRes.selected = false
-    }
-  })
+  if (sku) {
+    goods.specs.forEach((spec, i) => {
+      console.log(sku)
+      // 如果规格名字 颜色 与 sku中名字 颜色，则进行查找
+      if (spec.name === sku.specs[i].name) {
+        const selectRes = spec.values.find(val => val.name === sku.specs[i].valueName)
+        selectRes ? selectRes.selected = true : selectRes.selected = false
+      }
+    })
+  }
 }
 export default defineComponent({
   name: 'GoodsSku',

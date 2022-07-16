@@ -10,10 +10,25 @@
     <ul class="carousel-body">
       <!-- fade样式，用于控制每张图片的层级 和 透明度
       :class="{fade:index === i} 默认显示第一张 -->
-      <li class="carousel-item" :class="{fade:index === i}" v-for="(item,i) in sliders" :key="item.id">
-        <RouterLink to="/">
+      <li class="carousel-item" :class="{fade:index === i}"
+        v-for="(item,i) in sliders" :key="item.id"
+      >
+        <!-- 商品大图 比如像首页中的轮播图，传入的 sliders的item属性有imgUrl属性-->
+        <RouterLink v-if="item.hrefUrl" :to="item.hrefUrl">
           <img :src="item.imgUrl" alt="">
         </RouterLink>
+        <!-- 商品列表 商品详情的推荐商品 -->
+        <div v-else class="slider">
+          <RouterLink v-for="goodsItem in item" :key="goodsItem.id"
+            :to="`/product/${goodsItem.id}`"
+          >
+            <img :src="goodsItem.picture" alt="">
+            <!-- 推荐商品名字 -->
+            <p class="name ellipsis">{{goodsItem.name}}</p>
+            <!-- 推荐商品价格 -->
+            <p class="price">&yen;{{goodsItem.price}}</p>
+          </RouterLink>
+        </div>
       </li>
     </ul>
     <!-- 上一张 -->
@@ -143,6 +158,31 @@ export default defineComponent({
       img {
         width: 100%;
         height: 100%;
+      }
+      // 轮播商品list 样式
+      .slider {
+        display: flex;
+        justify-content: space-around;
+        padding: 0 40px;
+        > a {
+          width: 240px;
+          text-align: center;
+          img {
+            padding: 20px;
+            width: 230px!important;
+            height: 230px!important;
+          }
+          .name {
+            font-size: 16px;
+            color: #666;
+            padding: 0 40px;
+          }
+          .price {
+            font-size: 16px;
+            color: @priceColor;
+            margin-top: 15px;
+          }
+        }
       }
     }
     &-indicator {
