@@ -27,7 +27,7 @@ export default {
   },
   actions: {
     // 获取分类函数，发起异步请求调接口
-    async getList (ctx) {
+    async getList (ctx) { // 在layout中发起数据请求
       // 获取分类数据
       const data = await findCategory()
 

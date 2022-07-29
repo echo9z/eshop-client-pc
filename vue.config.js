@@ -15,6 +15,7 @@ module.exports = defineConfig({
     }
   },
   chainWebpack: config => {
+    // 将图片小于10kb的 压缩文件base64格式图片
     config.module
       .rule('images')
       .test(/\.(jpg|png|gif)$/)
@@ -23,5 +24,21 @@ module.exports = defineConfig({
           maxSize: 10 * 1024 // 10KiB
         }
       }) // 10kb以下将图片打包为base64
+
+    // 外部扩展的包
+    config.externals({
+      qc: 'QC'
+    })
+  },
+  devServer: {
+    // 开启ip 访问webpack
+    allowedHosts: 'all'
   }
+/*,
+  configureWebpack: {
+    externals: {
+      qc: 'QC'
+    }
+  }
+*/
 })

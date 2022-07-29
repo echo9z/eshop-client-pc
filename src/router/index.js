@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   // 一级路由布局容器
   {
     path: '/',
     component: () => import('@/views/Layout'),
-    children: [
+    children: [ // 配置在children的子路由，都会在Layout.vue的  <router-view>显示
       { // 二级路由布局容器 渲染个人中心 和 订单管理等等
         path: '/',
         component: () => import('@/views/home') // home页面用于展示渲染个人中心 和 订单管理等等
@@ -26,13 +26,22 @@ const routes = [
         props: true
       }
     ]
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/login')
+  },
+  {
+    path: '/login/callback',
+    component: () => import('@/views/login/callback')
   }
 ]
 
 // vue2.0 const router = VueRouter({}) 创建路由实例
 // vue3.0 createRouter({})
 const router = createRouter({
-  history: createWebHistory(), // 使用历史hash路由模式
+  // history: createWebHistory(), // 使用历史history路由模式
+  history: createWebHashHistory(), // 使用历史hash路由模式
   routes,
   // 路由在进行跳转切换时，进入新的页面始终滚动到顶部
   // https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html

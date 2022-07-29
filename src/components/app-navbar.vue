@@ -10,11 +10,11 @@
       <ul>
         <template v-if="profile.token">
           <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{profile.account}}</a></li>
-          <li><a href="javascript:;">退出登录</a></li>
+          <li><a href="javascript:;" @click="logout">退出登录</a></li>
         </template>
         <!-- 上下这两个是根据用户的登录状态来确定要显示的标签 -->
         <template v-else>
-          <li><a href="javascript:;">请先登录</a></li>
+          <li><a @click="login">请先登录</a></li>
           <li><a href="javascript:;">免费注册</a></li>
         </template>
 
@@ -30,6 +30,7 @@
 <script>
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'AppTopnav',
   setup () {
@@ -42,8 +43,22 @@ export default defineComponent({
       return store.state.user.profile
     })
     console.log(profile)
+
+    const router = useRouter()
+    const login = () => {
+      const fullPath = router.currentRoute.value.fullPath
+      fullPath === '/' ? router.push({ path: '/login' }) : router.push({ path: '/login', query: { redirectUrl: encodeURIComponent(router.currentRoute.value.fullPath) } })
+    }
+    // 退出登录
+    // 清空本地存储信息 和 vuex 用户信息
+    const logout = () => {
+      store.commit('user/setUser', {})
+      router.push('/login')
+    }
     return {
-      profile
+      profile,
+      login,
+      logout
     }
   }
 })

@@ -5,7 +5,7 @@
 * @date 2022/06/30 15:56:15
 !-->
 <template>
-  <div class="e-checkbox" @click="changeChecked()">
+  <div class="e-checkbox" @click="changeChecked()" >
     <!-- 选中图标样式 -->
     <i class="iconfont icon-checked" v-if="checked"></i>
     <!-- 未选中图标 -->

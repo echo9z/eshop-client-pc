@@ -14,6 +14,7 @@
 // *  遍历的同时进行全局注册即可
 
 import defaultImg from '@/assets/images/200.png'
+import message from './Message'
 // context(目录路径，是否记住子目录，加载文件的匹配正则)
 const importFn = require.context('./', false, /\.vue$/)
 // console.log(importFn.keys()) // 返回当前目录下所有文件路径的数组
@@ -37,6 +38,9 @@ export default {
 
     // 定义图片懒加载指令
     defineDirective(app)
+
+    // 在vue上挂载原型函数
+    app.config.globalProperties.$message = message
   }
 }
 

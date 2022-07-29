@@ -34,7 +34,7 @@ a {
 i {
   font-style: normal;
 }
-
+// <input type="text">
 input[type="text"],
 input[type="search"],
 input[type="password"], 
@@ -129,3 +129,74 @@ ul {
 //     transition: all .1s;
 //   }
 // }
+
+// 表单样式
+.e-form {
+  padding: 50px 0;
+  &-item {
+    display: flex;
+    align-items: center;
+    width: 700px;
+    margin: 0 auto;
+    padding-bottom: 25px;
+    .label {
+      width: 180px;
+      padding-right: 10px;
+      text-align: right;
+      color: #999;
+      ~ .field {
+        margin-left: 0;
+      }
+    }
+    .field {
+      width: 320px;
+      height: 50px;
+      position: relative;
+      margin-left: 190px;
+      .icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 40px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        color: #999;
+        ~ .input { // 便以为 .e-form-item .field .icon ~ .input 意思是field元素下的.icon后的所有 .input元素生效
+          padding-left: 40px;
+        }
+      }
+      .input{
+        border: 1px solid #e4e4e4;
+        width: 320px;
+        height: 50px;
+        line-height: 50px;
+        padding: 0 10px;
+        &.err {
+          border-color: @priceColor;
+        }
+        &:focus,&:active{
+          border-color: @xtxColor;
+        }
+      }
+    }
+    .error {
+      width: 180px;
+      padding-left: 10px;
+      color: @priceColor;
+    }
+  }
+  .submit {
+    width: 320px;
+    height: 50px;
+    border-radius: 4px;
+    background: @xtxColor;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    display: block;
+    margin: 0 auto;
+  }
+}
