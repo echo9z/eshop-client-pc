@@ -109,9 +109,9 @@ export default defineComponent({
     // 表单信息对象，用于提交登录属性信息
     const form = reactive({
       isAgree: true, // 默认是通用协议
-      account: 'xiaotuxian001',
+      account: 'abc123456',
       password: '123456',
-      mobile: '13219165182',
+      mobile: '13999999999',
       code: '123456'
     })
 
@@ -194,8 +194,9 @@ export default defineComponent({
               mobile: result.mobile,
               token: result.token
             })
+            const decodeURI = decodeURIComponent(route.query.redirectUrl)
             // 根据用户从哪里进入的登录页面，在跳转到原理的登录页
-            router.push({ path: decodeURIComponent(route.query.redirectUrl) && '/' })
+            router.push({ path: decodeURI === 'undefined' ? '/' : decodeURI })
             // 成功提示
             message({ type: 'success', text: '登录成功' })
           }
@@ -219,7 +220,7 @@ export default defineComponent({
       if (time.value <= 0) {
         pause()
       }
-    }, 1000, { immediate: false })
+    }, 1000, { immediate: false }) // immediate立即开启定时器
     // 组件销毁时，清除定时器
     onMounted(() => {
       // clearInterval(timer)

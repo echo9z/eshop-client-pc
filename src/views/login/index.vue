@@ -31,6 +31,8 @@ import { defineComponent, ref } from 'vue'
 import LoginHeader from './components/login-header.vue'
 import LoginFooter from './components/login-footer.vue'
 import LoginForm from './components/login-form.vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 export default defineComponent({
   name: 'LoginView',
 
@@ -41,6 +43,16 @@ export default defineComponent({
   setup () {
     // 默认是选中账号登录
     const activeName = ref('account')
+
+    // 存储回跳地址
+    // 来到登录页是存储redirectUrl来源页数据，存储到vuex中；便于如果通过QQ登录时候，成功登录跳转到来源页或者 首页
+    const store = useStore()
+    const route = useRoute()
+    console.log()
+    const decodeURI = decodeURIComponent(route.query.redirectUrl)
+    const url = (decodeURI === 'undefined' ? '/' : decodeURI)
+    console.log(url)
+    store.commit('user/setRedirectUrl', url)
     return {
       activeName
     }

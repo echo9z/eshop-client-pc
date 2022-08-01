@@ -47,13 +47,14 @@ export default defineComponent({
     const router = useRouter()
     const login = () => {
       const fullPath = router.currentRoute.value.fullPath
-      fullPath === '/' ? router.push({ path: '/login' }) : router.push({ path: '/login', query: { redirectUrl: encodeURIComponent(router.currentRoute.value.fullPath) } })
+      fullPath === '/' ? router.push('/login') : router.push({ path: '/login', query: { redirectUrl: encodeURIComponent(router.currentRoute.value.fullPath) } })
     }
     // 退出登录
     // 清空本地存储信息 和 vuex 用户信息
     const logout = () => {
       store.commit('user/setUser', {})
-      router.push('/login')
+      const fullPath = router.currentRoute.value.fullPath
+      fullPath === '/' ? router.push('/login') : router.push({ path: '/login', query: { redirectUrl: encodeURIComponent(router.currentRoute.value.fullPath) } })
     }
     return {
       profile,

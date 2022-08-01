@@ -34,7 +34,7 @@
       <ul v-if="currCategoryGoods && currCategoryGoods.goods">
         <!-- 一个弹出层有9个商品 -->
         <li v-for="item in currCategoryGoods.goods" :key="item.id">
-          <RouterLink to="/">
+          <RouterLink :to="`/product/${item.id}`">
             <img :src="item.picture" alt="">
             <div class="info">
               <p class="name ellipsis-2">{{item.name}}</p>
