@@ -194,11 +194,14 @@ export default defineComponent({
               mobile: result.mobile,
               token: result.token
             })
-            const decodeURI = decodeURIComponent(route.query.redirectUrl)
-            // 根据用户从哪里进入的登录页面，在跳转到原理的登录页
-            router.push({ path: decodeURI === 'undefined' ? '/' : decodeURI })
-            // 成功提示
-            message({ type: 'success', text: '登录成功' })
+            // 将本地购物车数据合拼到线上
+            store.dispatch('cart/mergeCart').then(() => {
+              const decodeURI = decodeURIComponent(route.query.redirectUrl)
+              // 根据用户从哪里进入的登录页面，在跳转到原理的登录页
+              router.push({ path: decodeURI === 'undefined' ? '/' : decodeURI })
+              // 成功提示
+              message({ type: 'success', text: '登录成功' })
+            })
           }
         } catch (err) {
           console.log(err)

@@ -50,9 +50,10 @@ export default defineComponent({
       fullPath === '/' ? router.push('/login') : router.push({ path: '/login', query: { redirectUrl: encodeURIComponent(router.currentRoute.value.fullPath) } })
     }
     // 退出登录
-    // 清空本地存储信息 和 vuex 用户信息
+    // 清空本地存储信息 和 vuex 用户信息，以及清空购物车
     const logout = () => {
       store.commit('user/setUser', {})
+      store.commit('cart/setCart', [])
       const fullPath = router.currentRoute.value.fullPath
       fullPath === '/' ? router.push('/login') : router.push({ path: '/login', query: { redirectUrl: encodeURIComponent(router.currentRoute.value.fullPath) } })
     }

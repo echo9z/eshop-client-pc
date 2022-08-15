@@ -10,7 +10,7 @@
     <div class="label" v-if="label">{{label}}</div>
     <div class="numbox">
       <a href="javascript:;" :class="{disabled: modelValue === min}" @click="changeNum(-1)">-</a>
-      <input type="text" number :value="modelValue">
+      <input type="text" number v-bind:value="number" v-on:input="inputNum($event)">
       <a href="javascript:;" :class="{disabled: modelValue === max}" @click="changeNum(1)">+</a>
     </div>
   </div>
@@ -18,7 +18,7 @@
 
 <script>
 import { useVModel } from '@vueuse/core'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'ENumBox',
 
@@ -45,6 +45,7 @@ export default defineComponent({
   },
 
   setup (props, { emit }) {
+    const number = ref(props.modelValue)
     // 绑定按钮点击事件 -按钮  +按钮，触发同一个事件，同一个函数
     // 使用use 中 useVModel做数据绑定，返回的是一个响应式数据，修改count值，就会触发emit事件触发向父组件触发更新
     const count = useVModel(props, 'modelValue', emit)
@@ -54,11 +55,22 @@ export default defineComponent({
       if (newValue < props.min || newValue > props.max) return
       // 正常改值
       count.value = newValue
+      number.value = newValue
       // 组件提供change事件，触发父组件中的change，将最新值提供给父组件
-      emit('change', newValue)
+      emit('changeNum', newValue)
+    }
+    // watch(number, (newValue) => {
+    //   console.log(newValue)
+    //   emit('change', newValue)
+    // })
+    const inputNum = ($event) => {
+      number.value = $event.target.value
+      emit('changeNum', number.value)
     }
     return {
-      changeNum
+      changeNum,
+      number,
+      inputNum
     }
   }
 })

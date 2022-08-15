@@ -29,7 +29,7 @@
           <!-- 商品数量组件 -->
           <ENumBox v-model="num" :max="goods.inventory" label="数量" />
           <!-- 按钮组件 -->
-          <EButton type="primary" style="margin-top: 20px;" size="large" >加入购物车</EButton>
+          <EButton @click="insertCart" type="primary" style="margin-top: 20px;" size="large" >加入购物车</EButton>
         </div>
       </div>
       <!-- 商品推荐 一个小轮播图 -->
@@ -64,6 +64,8 @@ import GoodsTabs from './components/goods-tabs.vue'
 import EButton from '@/components/library/e-button.vue'
 import GoodsHot from './components/goods-hot.vue'
 import GoodsWarn from './components/goods-warn.vue'
+import { useStore } from 'vuex'
+import Message from '@/components/library/Message'
 const useGoods = (props) => {
   const goods = ref(null)
   // 路由地址商品id发生变化，但不会重新初始化组件，通过监听在处理
@@ -98,6 +100,7 @@ export default defineComponent({
     const goods = useGoods(props)
 
     // 取得sku 对象信息
+    const currSku = ref({})
     const changeSku = (sku) => {
       console.log(sku)
       if (sku.skuId) {
@@ -105,6 +108,7 @@ export default defineComponent({
         goods.value.oldPrice = sku.oldPrice
         goods.value.inventory = sku.inventory
       }
+      currSku.value = sku // 记录用户点击的sku数据，也可能没有选中完整商品规格，返回的是一个空{}对象
     }
 
     // 通过vue3中依赖注入 provide函数
@@ -112,10 +116,41 @@ export default defineComponent({
     // 商品的选择数量
     const num = ref(1)
 
+    const store = useStore()
+    // 添加到购物车
+    const insertCart = () => {
+      // 约定加入购物车字段必须和后端保持一致
+      // id skuId name picture attrsText price nowPrice selected stock count isEffective
+      if (currSku.value && currSku.value.skuId) {
+        console.log(1)
+        const { id, name, price, mainPictures } = goods.value
+        const { skuId, specsText: attrsText, inventory: stock } = currSku.value
+        store.dispatch('cart/insertCart', {
+          id,
+          name,
+          price, // 根据选中的商品计算出的价格
+          nowPrice: price, // 现价
+          picture: mainPictures[0],
+          selected: true, // 默认购物车是勾选状态
+          count: num.value,
+          isEffective: true, // 商品是否有效，即商品是否有库存
+          skuId,
+          stock,
+          attrsText
+        }).then(() => { // 这里可以then原因是insertCart中通过resolve函数
+          Message({ type: 'success', text: '加入购物车成功' })
+        })
+      } else {
+        Message({ text: '请选择完整的商品规格' })
+      }
+      console.log(2)
+    }
+
     return {
       goods,
       changeSku,
-      num
+      num,
+      insertCart
     }
   }
 })

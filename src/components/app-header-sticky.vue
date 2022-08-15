@@ -24,12 +24,7 @@
           <i class="iconfont icon-search"></i>
         </div>
         <!-- 购物车 -->
-        <div class="cart">
-          <a class="curr" href="#">
-            <!-- 购物车小徽标 -->
-            <i class="iconfont icon-cart"></i><em>2</em>
-          </a>
-        </div>
+        <AppHeaderCart />
       </div>
     </div>
   </div>
@@ -40,11 +35,13 @@ import { computed, defineComponent } from 'vue'
 import AppHeaderNav from './app-header-nav.vue'
 // 基于组合api的 工具函数，包括鼠标移动 窗口移动 等等
 import { useWindowScroll } from '@vueuse/core'
+import AppHeaderCart from './app-header-cart.vue'
 export default defineComponent({
   name: 'AppHeaderSticky',
 
   components: {
-    AppHeaderNav
+    AppHeaderNav,
+    AppHeaderCart
   },
 
   props: {},

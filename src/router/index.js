@@ -24,6 +24,10 @@ const routes = [
         path: '/product/:id',
         component: () => import('@/views/goods'),
         props: true
+      },
+      {
+        path: '/cart',
+        component: () => import('@/views/cart')
       }
     ]
   },

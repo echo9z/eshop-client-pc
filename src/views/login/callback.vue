@@ -88,8 +88,10 @@ export default defineComponent({
             mobile: result.mobile,
             token: result.token
           })
-          router.push(store.state.user.redirectUrl)
-          message({ type: 'success', text: 'QQ登录成功' })
+          store.dispatch('cart/mergeCart').then(() => {
+            router.push(store.state.user.redirectUrl)
+            message({ type: 'success', text: 'QQ登录成功' })
+          })
         }).catch(err => {
           // 登录失败：小兔仙账号绑定过
           console.log(err)

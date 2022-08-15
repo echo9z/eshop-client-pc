@@ -1,5 +1,5 @@
 <!--
-* @description 商品SKU组件，商品规格 提醒sku商品id1369155859933827074
+* @description 商品SKU组件，商品规格 提醒sku商品id 1369155859933827074
 * @fileName goods-sku.vue
 * @author echo9z
 * @date 2022/07/08 21:33:49
@@ -62,7 +62,7 @@ const getPathMap = (skus) => {
     if (sku.inventory > 0) {
       // console.log(sku)
       // 计算当前有库存的sku的子集
-      // 例如：[1,2,3] ==> 得到 [[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]
+      // 例如：[1,2,3] ==> 得到 [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]
       // const powerSet = bwPowerSet(sku)
       // 将sku下规格specs对象数据取出进行遍历，通过map函数进行遍历返回新的数组对象
       /**
@@ -171,8 +171,10 @@ export default defineComponent({
   },
 
   setup (props, { emit }) {
-    // 根据传入的skuId，选中商品的按钮
-    initDefaultSelected(props.goods, props.skuId)
+    if (props.skuId) {
+      // 根据传入的skuId，选中商品的按钮
+      initDefaultSelected(props.goods, props.skuId)
+    }
 
     const pathMap = getPathMap(props.goods.skus)
     console.log(pathMap)
@@ -209,6 +211,8 @@ export default defineComponent({
         const skuObj = props.goods.skus.find(sku => sku.id === skuIds[0])
         console.log('选择完成SkuId', skuIds)
         // 通知父组件，传入skuObj 对象
+        // 取出 name:"颜色" valueName:"蓝色"，根据sku的specs第一项去goods 对象中查找选中图片
+        // skuObj.specs[0]
         emit('change', {
           skuId: skuObj.id,
           price: skuObj.price,
@@ -219,7 +223,7 @@ export default defineComponent({
         })
         // console.log(skuObj.specs.reduce((str, spec) => `${str} ${spec.name}:${spec.valueName}`, ''))
       } else {
-        console.log('选择不完成')
+        console.log('选择规格不完成')
         // 父组件需要判断规格是否完整，完整不能加入购物车
         emit('change', {})
       }
