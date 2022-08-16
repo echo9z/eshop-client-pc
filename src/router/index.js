@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import store from '@/store'
 
 const routes = [
   // 一级路由布局容器
@@ -28,6 +29,10 @@ const routes = [
       {
         path: '/cart',
         component: () => import('@/views/cart')
+      },
+      {
+        path: '/member/checkout',
+        component: () => import('@/views/member/pay/checkout.vue')
       }
     ]
   },
@@ -55,6 +60,19 @@ const router = createRouter({
     // vu3.0 left 和 top
     return { left: 0, top: 0 }
   }
+})
+
+// 前置导航守卫导航
+router.beforeEach((to, from, next) => {
+  // 对于以 /member 开头的 需要登录token数据
+  const { profile } = store.state.user
+  // token不存在， 且跳转的path路径 以 /member开头
+  if (!profile.token && to.path.startsWith('/member')) {
+    // to来源于地址对象
+    return next('/login?redirectUrl=' + encodeURIComponent(to.fullPath))
+  }
+  // 其他放行
+  next()
 })
 
 export default router

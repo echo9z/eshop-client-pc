@@ -93,7 +93,7 @@ export default defineComponent({
   z-index: 9999;
   left: 50%;
   margin-left: -150px;
-  top: 30px;
+  top: 150px;
   line-height: 50px;
   padding: 0 25px;
   border: 1px solid #e4e4e4;

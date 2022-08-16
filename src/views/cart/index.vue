@@ -103,7 +103,7 @@
         <div class="total">
           共 {{$store.getters['cart/validTotal']}} 件商品，已选择 {{$store.getters['cart/selectedTotal']}} 件，商品合计：
           <span class="red">¥{{$store.getters['cart/validAmount']}}</span>
-          <EButton type="primary">下单结算</EButton>
+          <EButton @click="checkout()" type="primary">下单结算</EButton>
         </div>
       </div>
       <!-- 猜你喜欢 没有传商品id，就是猜你喜欢-->
@@ -120,6 +120,8 @@ import { useStore } from 'vuex'
 import CartNone from './components/cart-none.vue'
 import Confirm from '@/components/library/Confirm'
 import CartSku from './components/cart-sku.vue'
+import Message from '@/components/library/Message'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'CartPage',
@@ -168,13 +170,31 @@ export default defineComponent({
     const updateCartSku = (oldSkuId, newSku) => {
       store.dispatch('cart/updateCartSku', { oldSkuId, newSku })
     }
+    const router = useRouter()
+    // 结算按钮
+    const checkout = () => {
+      // 判断是否有选中商品，给出提示
+      // 判断是否登录，弹出框：提示需要登录
+      // 添加路由导航
+      if (store.getters['cart/selectedList'].length === 0) return Message({ text: '请选择至少一件商品', type: 'warn' })
+      if (!store.state.user.profile.token) {
+        Confirm({ text: '下单结算需要登录，您是否去登录？' }).then(() => {
+          // 如果用户没有用户token，也跳转下单页面
+          router.push('/member/checkout')
+        }).catch(e => {
+        })
+      } else {
+        router.push('/member/checkout')
+      }
+    }
     return {
       checkOne,
       checkAll,
       delCart,
       batchDeleteCart,
       changeCount,
-      updateCartSku
+      updateCartSku,
+      checkout
     }
   }
 })
