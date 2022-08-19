@@ -11,3 +11,27 @@ import request from '@/utils/request'
 export const createdOrder = (cancelReason) => {
   return request('/member/order/pre', 'GET', { cancelReason })
 }
+/**
+ * 添加收货地址
+ * @param {Object} form - 添加收货地址 表单对象
+ * @returns Promise
+ */
+export const addAddress = (form) => {
+  return request('/member/address', 'POST', form)
+}
+/**
+ * 修改收货地址
+ * @param {Object} form - 修改收货地址
+ * @returns Promise
+ */
+export const editAddress = (form) => {
+  return request(`/member/address/${form.id}`, 'PUT', form)
+}
+/**
+ * 提交订单
+ * @param {Object} order
+ * @returns Promise
+ */
+export const submitOrder = (order) => {
+  return request('/member/order', 'POST', order)
+}

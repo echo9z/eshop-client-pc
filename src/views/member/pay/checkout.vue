@@ -18,7 +18,7 @@
         <h3 class="box-title">收货地址</h3>
         <div class="box-body">
           <!-- userAddresses地址收货列表 -->
-          <CheckoutAddress :list="order.userAddresses || []" />
+          <CheckoutAddress :list="order.userAddresses" @change="changeAddress($event)" />
         </div>
 
         <!-- 商品信息 -->
@@ -83,7 +83,7 @@
 
         <!-- 提交订单 -->
         <div class="submit">
-          <EButton type="primary">提交订单</EButton>
+          <EButton type="primary" @click="submitOrderFn">提交订单</EButton>
         </div>
       </div>
     </div>
@@ -91,9 +91,9 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import CheckoutAddress from './components/checkout-address.vue'
-import { createdOrder } from '@/api/order'
+import { createdOrder, submitOrder } from '@/api/order'
 import Message from '@/components/library/Message'
 import { useRouter } from 'vue-router'
 export default defineComponent({
@@ -109,6 +109,7 @@ export default defineComponent({
     const router = useRouter()
     createdOrder().then(data => {
       order.value = data.result
+      reqParams.goods = data.result.goods.map(item => ({ skuId: item.skuId, count: item.count }))
     }).catch(e => {
       console.log(e)
       const data = e.response.data
@@ -117,8 +118,40 @@ export default defineComponent({
         return router.push('/cart')
       }
     })
+
+    // 结算功能 - 提交订单对象
+    const reqParams = reactive({
+      goods: [],
+      addressId: null, // 所选地址Id 初始checkoutAddress组件时，赋值addressId
+      deliveryTimeType: '', // 配送时间类型，1为不限，2为工作日，3为双休或假日
+      payType: 1, // 支付方式，1为在线支付，2为货到付款
+      payChannel: 1, // 支付渠道：支付渠道，1支付宝、2微信--支付方式为在线支付时，传值，为货到付款时，不传值
+      buyerMessage: 'test' // 买家留言
+    })
+
+    // 提交订单对象
+    // const addressId = ref(null)
+    const changeAddress = (id) => {
+      console.log(id)
+      reqParams.addressId = id
+      console.log(reqParams.addressId)
+    }
+
+    // 提交订单逻辑
+    const submitOrderFn = () => {
+      // 是否存在收货地址
+      if (!reqParams.addressId) return Message({ type: 'warn', text: '亲，请选择收货地址' })
+      submitOrder(reqParams).then(data => {
+        Message({ type: 'success', text: '提交订单成功' })
+        console.log(data)
+        // 跳转至支付页面
+        router.push({ path: '/member/pay', query: { id: data.result.id } })
+      })
+    }
     return {
-      order
+      order,
+      changeAddress,
+      submitOrderFn
     }
   }
 })
