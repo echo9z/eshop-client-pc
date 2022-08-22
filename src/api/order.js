@@ -35,3 +35,11 @@ export const editAddress = (form) => {
 export const submitOrder = (order) => {
   return request('/member/order', 'POST', order)
 }
+/**
+ * 根据订单id 查询订单详情
+ * @param {*} id - 订单id
+ * @returns Promise
+ */
+export const findOrderDetail = (id) => {
+  return request(`/member/order/${id}`, 'GET')
+}

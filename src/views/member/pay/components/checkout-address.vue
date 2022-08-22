@@ -140,6 +140,7 @@ export default defineComponent({
         props.list.unshift(JSON.parse(formDataStr))
         if (!showAddress.value) { // 如果没有收货地址
           showAddress.value = formData
+          emit('change', showAddress.value && showAddress.value.id)
         }
       }
     }

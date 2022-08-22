@@ -129,7 +129,7 @@ export default defineComponent({
       buyerMessage: 'test' // 买家留言
     })
 
-    // 提交订单对象
+    // 收货地址id
     // const addressId = ref(null)
     const changeAddress = (id) => {
       console.log(id)

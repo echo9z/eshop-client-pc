@@ -36,7 +36,16 @@ const routes = [
       },
       {
         path: '/member/pay',
-        component: () => import('@/views/member/pay/checkout.vue')
+        component: () => import('@/views/member/pay')
+      },
+      {
+        path: '/pay/callback', // 用于支付回调的页面地址
+        component: () => import('@/views/member/pay/result.vue') // 支付结果页
+      },
+      // 个人中心页
+      {
+        path: '/member/home',
+        component: () => import('@/views/member/home') // 支付结果页
       }
     ]
   },
