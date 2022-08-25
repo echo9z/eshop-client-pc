@@ -1,6 +1,8 @@
 const { defineConfig } = require('@vue/cli-service')
 // vue.config.js
 const path = require('path')
+// 头部引入
+// const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 module.exports = defineConfig({
   transpileDependencies: true,
@@ -24,11 +26,12 @@ module.exports = defineConfig({
           maxSize: 10 * 1024 // 10KiB
         }
       }) // 10kb以下将图片打包为base64
-
+    // config.resolve.fallback.set('url', require.resolve('url/'))
     // 外部扩展的包
     config.externals({
       qc: 'QC'
     })
+    // config.plugin('node-polyfill').use(new NodePolyfillPlugin())
   },
   devServer: {
     // 开启ip 访问webpack
@@ -36,6 +39,7 @@ module.exports = defineConfig({
   }
 /*,
   configureWebpack: {
+    plugins: [new NodePolyfillPlugin()], // 处理webpack5中 直接import引入node内置核心包报错
     externals: {
       qc: 'QC'
     }

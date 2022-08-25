@@ -9,7 +9,7 @@
     <div class="container">
       <ul>
         <template v-if="profile.token">
-          <li><a href="javascript:;"><i class="iconfont icon-user"></i>{{profile.account}}</a></li>
+          <li><RouterLink to="/member"><i class="iconfont icon-user"></i>{{profile.account}}</RouterLink></li>
           <li><a href="javascript:;" @click="logout">退出登录</a></li>
         </template>
         <!-- 上下这两个是根据用户的登录状态来确定要显示的标签 -->

@@ -10,4 +10,7 @@ import '@/assets/styles/common.less'
 // 导入自己封装插件 即 UI组件库
 import UI from '@/components/library'
 
+// mock 模拟数据
+import '@/mock'
+
 createApp(App).use(store).use(router).use(UI).mount('#app')

@@ -1,5 +1,6 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, RouterView } from 'vue-router'
 import store from '@/store'
+import { h } from 'vue'
 
 const routes = [
   // 一级路由布局容器
@@ -44,8 +45,28 @@ const routes = [
       },
       // 个人中心页
       {
-        path: '/member/home',
-        component: () => import('@/views/member/home') // 支付结果页
+        path: '/member',
+        component: () => import('@/views/member/Layout.vue'), // 支付结果页
+        children: [
+          {
+            path: '/member', // 访问 /member 会默认重定向到home组件
+            component: () => import('@/views/member/home') // 支付结果页
+          },
+          {
+            path: '/member/order', // 订单列表
+            component: { render: () => h(<RouterView />) }, // 相当于在 /member/order/index.vue中添加 RouterView路由出口
+            children: [
+              {
+                path: '', // 订单详情
+                component: () => import('@/views/member/order')
+              },
+              {
+                path: ':id', // 订单详情
+                component: () => import('@/views/member/order/detail.vue')
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -65,6 +86,7 @@ const router = createRouter({
   // history: createWebHistory(), // 使用历史history路由模式
   history: createWebHashHistory(), // 使用历史hash路由模式
   routes,
+  // linkExactActiveClass: 'active', // 配置全局router 激活类名
   // 路由在进行跳转切换时，进入新的页面始终滚动到顶部
   // https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html
   scrollBehavior () {
