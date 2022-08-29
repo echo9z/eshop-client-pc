@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { findOrderDetail } from '@/api/order'
 import { usePayTime } from '@/hooks/index'
@@ -113,7 +113,7 @@ export default defineComponent({
       }
     }, 1000, { immediate: false }) // immediate立即开启定时器) */
 
-    onMounted(() => {
+    onUnmounted(() => {
       // 组件销毁时，停止定时器
       end()
     })

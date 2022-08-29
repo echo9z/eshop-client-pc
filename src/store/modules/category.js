@@ -35,7 +35,7 @@ export default {
       data.result.forEach(top => {
         top.open = false // 给每个一级分类添加一个控制 二级分类显示和隐藏数据，默认隐藏
       })
-      console.log(data)
+      // console.log(data)
       // 修改数据
       ctx.commit('setList', data.result)
     }
