@@ -13,13 +13,13 @@
         <i class="iconfont icon-down-time"></i>
         <b>付款截止：{{timeText}}</b>
       </span>
-      <a href="javascript:;" class="del" v-if="[5,6].includes(order.orderState)">删除</a>
+      <a href="javascript:;" @click="$emit('delOrder', order)" class="del" v-if="[5,6].includes(order.orderState)">删除</a>
     </div>
     <div class="body">
       <div class="column goods">
         <ul>
           <li v-for="goods in order.skus" :key="goods.id">
-            <RouterLink class="image" :to="`/product/${goods.id}`">
+            <RouterLink class="image" :to="`/product/${goods.spuId}`">
               <img :src="goods.image" alt="" />
             </RouterLink>
             <div class="info">
@@ -38,7 +38,7 @@
         <!-- 待收货  显示查看物流  -->
         <!-- 待评价  显示评价商品  -->
         <!-- 已完成  显示查看评价  -->
-        <p><a class="green" v-if="order.orderState===3" href="javascript:;">查看物流</a></p>
+        <p><a @click="$emit('onLogistics', order)" class="green" v-if="order.orderState===3" href="javascript:;">查看物流</a></p>
         <p><a class="green" v-if="order.orderState===4" href="javascript:;">评价商品</a></p>
         <p><a class="green" v-if="order.orderState===5" href="javascript:;">查看评价</a></p>
       </div>
@@ -58,10 +58,10 @@
         <EButton v-if="order.orderState===1" type="primary" size="small">
           <RouterLink :to="`/member/pay?id=${order.id}`">立即付款</RouterLink>
         </EButton>
-        <EButton v-if="order.orderState===3" type="primary" size="small">确认收货</EButton>
-        <p><a href="javascript:;">查看详情</a></p>
-        <p><a v-if="order.orderState===1" href="javascript:;">取消订单</a></p>
-        <p><a v-if="[2,3,4,5].includes(order.orderState)" href="javascript:;">再次购买</a></p>
+        <EButton v-if="order.orderState===3" @click="$emit('onConfirm', order)" type="primary" size="small">确认收货</EButton>
+        <p><RouterLink :to="`/member/order/${order.id}`">查看详情</RouterLink></p>
+        <p><a v-if="order.orderState===1" href="javascript:;" @click="$emit('onCancel', order)">取消订单</a></p>
+        <p><a v-if="[2,3,4,5].includes(order.orderState)" @click="$router.push(`/member/checkout?orderId=${order.id}`)"  href="javascript:;">再次购买</a></p>
         <p><a v-if="[4,5].includes(order.orderState)" href="javascript:;">申请售后</a></p>
       </div>
     </div>
@@ -76,7 +76,7 @@ export default defineComponent({
   name: 'MemberOrderItem',
 
   components: {},
-
+  emits: ['onCancel', 'delOrder', 'onConfirm', 'onLogistics'],
   props: {
     order: {
       type: Object,

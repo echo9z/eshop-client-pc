@@ -53,3 +53,44 @@ export const findOrderDetail = (id) => {
 export const findOrderList = ({ page = 1, pageSize = 10, orderState = 0 }) => {
   return request('/member/order', 'GET', { page, pageSize, orderState })
 }
+/**
+ * 取消订单
+ * @param {String} orderId - 订单id
+ * @param {String} cancelReason - 取消原因
+ * @returns Promise
+ */
+export const cancelOrder = ({ orderId, cancelReason }) => {
+  return request(`/member/order/${orderId}/cancel`, 'PUT', { cancelReason })
+}
+/**
+ * 删除订单
+ * @param {Array} orderId
+ * @returns Promise
+ */
+export const delOrder = (orderId) => {
+  return request('/member/order', 'DELETE', { ids: [orderId] })
+}
+/**
+ * 确认收货
+ * @param {String} orderId - 订单id
+ * @returns Promise
+ */
+export const confirmOrder = (orderId) => {
+  return request(`/member/order/${orderId}/receipt`, 'PUT')
+}
+/**
+ * 查询物流
+ * @param {String} orderId  - 订单id
+ * @returns Promise
+ */
+export const logisticsOrder = (orderId) => {
+  return request(`/member/order/${orderId}/logistics`, 'GET')
+}
+/**
+ * 获取再次购买的订单中id 再次生成对应商品的订单
+ * @param {String} id - 订单ID
+ * @returns
+ */
+export const findOrderRepurchase = (id) => {
+  return request(`/member/order/repurchase/${id}`, 'get')
+}

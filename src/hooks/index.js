@@ -39,7 +39,7 @@ export const usePayTime = () => {
   const { pause, resume } = useIntervalFn(() => {
     // 倒计时处理的逻辑
     time.value--
-    console.log(time.value)
+    // console.log(time.value)
     // 通过unix函数 安装格式转换为format
     timeText.value = dayjs.unix(time.value).format('mm分ss秒')
     if (time.value <= 0) { // 小于等于0，停止定时器

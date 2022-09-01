@@ -93,9 +93,9 @@
 <script>
 import { defineComponent, reactive, ref } from 'vue'
 import CheckoutAddress from './components/checkout-address.vue'
-import { createdOrder, submitOrder } from '@/api/order'
+import { createdOrder, submitOrder, findOrderRepurchase } from '@/api/order'
 import Message from '@/components/library/Message'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 export default defineComponent({
   name: 'CheckoutPage',
 
@@ -107,17 +107,28 @@ export default defineComponent({
     // 订单信息
     const order = ref(null)
     const router = useRouter()
-    createdOrder().then(data => {
-      order.value = data.result
-      reqParams.goods = data.result.goods.map(item => ({ skuId: item.skuId, count: item.count }))
-    }).catch(e => {
-      console.log(e)
-      const data = e.response.data
-      if (data.code === '18008' && data.message === '无有效商品') {
-        Message({ type: 'error', text: data.message })
-        return router.push('/cart')
-      }
-    })
+    const route = useRoute()
+    // 调用后台 根据当前用户所选中商品生产订单
+    if (route.query.orderId) { // 根据再次购买 订单的id，再次生成订单
+      // 按照地址栏的orderId进行结算
+      findOrderRepurchase(route.query.orderId).then(data => {
+        order.value = data.result
+        reqParams.goods = data.result.goods.map(item => ({ skuId: item.skuId, count: item.count }))
+      })
+    } else {
+      // 按照购物商品进行结算
+      createdOrder().then(data => {
+        order.value = data.result
+        reqParams.goods = data.result.goods.map(item => ({ skuId: item.skuId, count: item.count }))
+      }).catch(e => {
+        console.log(e)
+        const data = e.response.data
+        if (data.code === '18008' && data.message === '无有效商品') {
+          Message({ type: 'error', text: data.message })
+          return router.push('/cart')
+        }
+      })
+    }
 
     // 结算功能 - 提交订单对象
     const reqParams = reactive({
